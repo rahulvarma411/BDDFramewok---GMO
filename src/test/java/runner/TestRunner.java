@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 
 @CucumberOptions(
 		features=".//src//test//java//feature//GMO.feature",
-		glue="stepDef",
+		glue= {"stepDef","base"},
 		dryRun=false,
 		monochrome = true,
 		strict=true,

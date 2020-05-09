@@ -34,7 +34,7 @@ public class stepLib {
      @Then("^User logout from app$")
      public void user_logout_from_app() throws Throwable {
      WelcomePage welcomePage=new WelcomePage();
-	 welcomePage.tearDown();
+	 welcomePage.tearDown(null);
      }
 	
     @And("^User verify all buttons are clickable on home page$")
