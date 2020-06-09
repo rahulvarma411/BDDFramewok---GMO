@@ -4,16 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
+import com.cucumber.listener.Reporter;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class PredefinedActions {
@@ -34,16 +32,18 @@ public class PredefinedActions {
 		SimpleDateFormat simpledateformat = new SimpleDateFormat("ddMMyyyyhhmmss");
 		Date date = new Date();
 		String timestamp= simpledateformat.format(date);	
-		return timestamp;
-		
+		return timestamp;		
 	}
 	
-	public static void getScreenShot(String filename ) throws IOException{
+	public static String getScreenShot(String filename ) throws IOException{
 		String timestamp = getTimestamp();
 		TakesScreenshot screenshot = (TakesScreenshot) driver;
 		File src = screenshot.getScreenshotAs(OutputType.FILE);
-		File dest = new File (".//Snapshot//"+filename+timestamp+".png\"");
-		FileUtils.copyFile(src, dest);		
+		String destPath = System.getProperty("user.dir")+"/target/snapshots/"+filename+timestamp+".png";
+		File dest = new File (destPath);
+		FileUtils.copyFile(src, dest);	
+		
+		return destPath;
 	}
 	
 	public static void displayConsoleResult(){
@@ -54,18 +54,18 @@ public class PredefinedActions {
 	}
 
 	@After
-	public void tearDown(Scenario scenario) {
+	public void tearDown(Scenario scenario) throws IOException {
 		TakesScreenshot sc = (TakesScreenshot)driver;
 		byte []screenshot = sc.getScreenshotAs(OutputType.BYTES);
 		scenario.embed(screenshot, "image/png");
+		String screenshotPath = getScreenShot(scenario.getName().replace(" ", ""));
 		if(scenario.isFailed()) {
+			Reporter.addScreenCaptureFromPath(screenshotPath);
 			failedTest++;
 		}else {
 			passedTest++;
-		}
-		
-		displayConsoleResult();
-		
+		}		
+		displayConsoleResult();		
 		driver.quit();
 	}
 }

@@ -1,7 +1,7 @@
-@gmoTests
+@gmoTests2
 Feature: User verify text GMO Online on home page
 
-
+@test12
    Scenario Outline: validate home page
    Given User is on home page
    Then User verify "<text>" on home page
@@ -10,7 +10,7 @@ Feature: User verify text GMO Online on home page
    		| text | 
    		| GMO OnLine | 
  
-   
+
    Scenario: Verify 'Enter GMO OnLine' , 'About The GMO Site', and 'Browser Test Page'  buttons are visible and clickable.
    Given User is on home page
    And User verify mentioned buttons are visible on home page
@@ -62,7 +62,7 @@ Feature: User verify text GMO Online on home page
    		| quantity | 
    		| 1 | 
    		
-   @test1
+
    Scenario Outline: Verify user can Place an Order after clicking proceed with Order button
    Given User is on home page
    When User click on Enter GMO Online button
